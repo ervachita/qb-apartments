@@ -25,7 +25,7 @@ AddEventHandler('apartments:server:UpdateApartment', function(type)
     local Player = ESX.GetPlayerData(src)
     ExecuteSql(false, "UPDATE `apartments` SET type='"..type.."' WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'")
 
-    TriggerClientEvent('QBCore:Notify', src, "Apartmanını degistirdin!")
+    TriggerClientEvent('mythic_notify:client:SendAlert', src, "Apartmanını degistirdin!")
     TriggerClientEvent("apartments:client:SetHomeBlip", src, type)
 end)
 
@@ -42,7 +42,7 @@ end)
 RegisterServerEvent('apartments:server:OpenDoor')
 AddEventHandler('apartments:server:OpenDoor', function(target, apartmentId, apartment)
     local src = source
-    local OtherPlayer = QBCore.Functions.GetPlayer(target)
+    local OtherPlayer = ESX.GetPlayerData(target)
     if OtherPlayer ~= nil then
         TriggerClientEvent('apartments:client:SpawnInApartment', OtherPlayer.PlayerData.source, apartmentId, apartment)
     end
@@ -51,7 +51,7 @@ end)
 RegisterServerEvent('apartments:server:AddObject')
 AddEventHandler('apartments:server:AddObject', function(apartmentId, apartment, offset)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = ESX.GetPlayerData(src)
     if ApartmentObjects[apartment] ~= nil and ApartmentObjects[apartment].apartments ~= nil and ApartmentObjects[apartment].apartments[apartmentId] ~= nil then
         ApartmentObjects[apartment].apartments[apartmentId].players[src] = Player.PlayerData.citizenid
     else
